@@ -1,7 +1,3 @@
-variable "bucket_name" {
-  description = "The name for the S3 bucket. Must be globally unique."
-  type        = string
-}
 
 # Create a private S3 bucket for Strapi uploads
 resource "aws_s3_bucket" "strapi_uploads" {
@@ -67,4 +63,8 @@ resource "aws_iam_role_policy_attachment" "s3_policy_attach" {
 resource "aws_iam_instance_profile" "ec2_profile" {
   name = "ec2-s3-instance-profile"
   role = aws_iam_role.ec2_s3_role.name
+}
+# Create an IAM user for programmatic access (if needed)
+resource "aws_iam_user" "s3_user" {
+  name = "strapi-s3-user"
 }

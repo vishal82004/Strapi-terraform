@@ -41,11 +41,14 @@ resource "aws_instance" "web" {
                 HOST=0.0.0.0
                 PORT=1337
                 
-                # Generate these keys locally with `openssl rand -base64 32` and add as variables
-                APP_KEYS="${var.APP_KEYS}"
-                API_TOKEN_SALT="${var.API_TOKEN_SALT}"
-                ADMIN_JWT_SECRET="${var.ADMIN_JWT_SECRET}"
-                TRANSFER_TOKEN_SALT="${var.TRANSFER_TOKEN_SALT}"
+                # Security Keys
+                AWS_BUCKET=${var.s3_bucket_name}
+                AWS_SIGNED_URL_EXPIRATION=${var.AWS_SIGNED_URL_EXPIRATION}
+                AWS_ACL=${var.AWS_ACL}
+                AWS_REGION=${var.aws_region}
+                AWS_ACCESS_KEY_ID=${module.s3.access_key}
+                AWS_SECRET_ACCESS_KEY=${module.s3.secret_key}
+
 
                 # Database Connection
                 DATABASE_CLIENT=postgres

@@ -7,7 +7,7 @@ resource "aws_security_group" "sg" {
         from_port   = 22
         to_port     = 22
         protocol    = "tcp"
-        cidr_blocks = var.ssh_cidr_blocks # Replace with your public IP or range
+        cidr_blocks = var.ssh_cidr_blocks
     }
     ingress {
     description = "Allow HTTP"
@@ -35,10 +35,7 @@ resource "aws_security_group" "sg" {
     }
 resource "aws_db_subnet_group" "private_db_subnet" {
   name       = "private-db-subnet-group"
-  count = length(module.vpc.private_subnet_ids)
-  subnet_ids = [
-    module.vpc.private_subnet_ids[count.index],
-  ]
+  subnet_ids = module.vpc.private_subnet_ids
     description = "Subnet group for private RDS instance"
 
   tags = {
@@ -66,6 +63,7 @@ resource "aws_security_group" "dbsg" {
 
 }
 resource "aws_db_instance" "rds" {
+  depends_on = [ aws_db_subnet_group.private_db_subnet ]
   identifier         = var.db_instance_identifier
   engine            = "postgres"
   username          = var.db_username

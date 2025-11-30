@@ -67,11 +67,7 @@ variable "API_TOKEN_SALT" {
   type        = string
   default     = module.rds.api_token_salt
 }
-variable "TRANSFER_TOKEN_SALT" {
-  description = "Transfer Token Salt"
-  type        = string
-  default     = module.rds.transfer_token_salt
-}
+
 variable "rds_endpoint" {
   description = "The RDS endpoint"
   type        = string
@@ -96,4 +92,15 @@ variable "s3_bucket_name" {
   description = "The name of the S3 bucket"
   type        = string
   default     = module.s3.s3_bucket_name
+}
+variable "AWS_SIGNED_URL_EXPIRATION" {
+  type = number
+  description = "Expiration time for signed URLs in seconds"
+  default     = 3600
+}
+variable "AWS_ACL" {
+  type = string
+  description = "The ACL to apply to the S3 bucket"
+  default     = "private"
+  
 }

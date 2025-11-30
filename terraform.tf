@@ -44,6 +44,7 @@ variable "private_subnet_cidrs" {
   type        = list(string)
   default     = ["10.0.3.0/24", "10.0.4.0/24"]
 }
+ 
 
 #------------------------------------------------------------------------------
 # EC2 Instance Variables
@@ -54,13 +55,62 @@ variable "instance_type" {
   type        = string
   default     = "t3.micro"
 }
-
+variable "instance_name" {
+  description = "The name tag for the EC2 instance"
+  type        = string
+  default     = "strapi-ec2-instance"
+}
+variable "instance_count" {
+  description = "The number of EC2 instances to launch"
+  type        = number
+  default     = 1
+}
+variable "key_name" {
+  description = "The name of the SSH key pair"
+  type        = string
+}
+variable "associate_public_ip" {
+  description = "Whether to associate a public IP address with the EC2 instance"
+  type        = bool
+  default     = false
+  
+}
+variable "public_key" {
+  description = "The public key material for the SSH key pair"
+  type        = string
+  
+}
 variable "ami_id" {
   description = "The AMI ID for the EC2 instance"
   type        = string
   default     = "ami-0c02fb55956c7d316" # Amazon Linux 2 AMI (HVM), SSD Volume Type in us-east-1
 }
-
+variable "ACL" {
+  description = "The ACL for the S3 bucket"
+  type        = string
+  default     = "private"
+  
+}
+variable "AWS_SIGNED_URL_EXPIRATION" {
+  description = "The expiration time (in seconds) for signed URLs"
+  type        = number
+  default     = 900
+}
+variable "ADMIN_JWT_SECRET" {
+  description = "Admin JWT Secret"
+  type        = string
+  sensitive   = true
+}
+variable "APP_KEYS" {
+  description = "Application Keys"
+  type        = string
+  sensitive   = true
+}
+variable "API_TOKEN_SALT" {
+  description = "API Token Salt"
+  type        = string    
+  sensitive   = true
+}
 #------------------------------------------------------------------------------
 # RDS Database Variables
 #------------------------------------------------------------------------------
@@ -94,6 +144,16 @@ variable "db_password" {
   sensitive   = true
   
 }
+variable "db_subnet_group_name" {
+  description = "The subnet group name for the RDS instance"
+  type        = list(string)    
+  default     = ["private-db-subnet-group"]
+} 
+variable "db_instance_identifier" {
+  description = "The DB instance identifier"
+  type        = string
+  default     = "strapi-rds-instance"
+} 
 
 #------------------------------------------------------------------------------
 # S3 Bucket Variables
